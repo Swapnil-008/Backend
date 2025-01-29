@@ -14,4 +14,4 @@ app.listen(process.env.PORT, () => {
     console.log(`Example app listening on port:${process.env.PORT}`)
 })
 
-// free platforms to deplaoy
+// free platforms to deplaoy -- digitalocean
