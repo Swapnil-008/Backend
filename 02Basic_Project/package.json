@@ -1,0 +1,27 @@
+{
+  "name": "chaibackend",
+  "version": "1.0.0",
+  "description": "A basic app to deplo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Swapnil-008/Backend.git"
+  },
+  "keywords": [
+    "node",
+    "chai"
+  ],
+  "author": "Swapnil Shingne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Swapnil-008/Backend/issues"
+  },
+  "homepage": "https://github.com/Swapnil-008/Backend#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0"
+  }
+}

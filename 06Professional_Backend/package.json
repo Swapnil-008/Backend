@@ -1,0 +1,20 @@
+{
+  "name": "06professional_backend",
+  "version": "1.0.0",
+  "description": "Backend at chai aur code channel",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "Javascript",
+    "backend"
+  ],
+  "author": "Swapnil Shingne",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
+  }
+}
