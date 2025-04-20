@@ -23,3 +23,13 @@ app.use(express.static('public')) //Where are the static files // Like if we wan
 
 //configuration of cookie-parser
 app.use(cookieParser()) //Where are the cookies stored //We can set the cookies in the browser
+
+//routes import
+import userRouter from './routes/user.routes.js'
+
+//routes declaration
+app.use('/api/v1/users', userRouter)
+
+// http://localhost:8000/api/v1/users/register
+
+export {app}

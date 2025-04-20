@@ -1,10 +1,10 @@
 //Using promise
 const asyncHandler = (requestHandler) => {
-    (req, res, next) => {
-        Promise.resolve(requestHandler(req, res, next))
-        .catch((err) => next(err))
-    }
-}
+    return (req, res, next) => {
+      Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
+    };
+  };
+  
 
 //Using Try-Catch
 // const asyncHandler = (requestHandler) => {
@@ -21,7 +21,7 @@ const asyncHandler = (requestHandler) => {
 //     }
 // }
 
-export {asyncHandler}
+export { asyncHandler };
 
 //Link of grok chat for proper explanation of this above code
 //https://grok.com/share/bGVnYWN5_f3f5360b-8c05-451d-a7f8-fde8ffd2a30e

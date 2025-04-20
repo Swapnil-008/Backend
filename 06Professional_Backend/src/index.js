@@ -1,11 +1,15 @@
-//require('dotenv').config({path: './env})
+// require('dotenv').config({path: './env})
+// import {DB_NAME} from './constants.js'
+// import express from 'express'
+// const app = express()
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
-import {DB_NAME} from './constants.js'
-import connectDB from './db/index.js'
 
-import express from 'express'
-const app = express()
+import connectDB from './db/index.js'
+import {app} from './app.js'
+dotenv.config({
+    path: './env'
+})
 
 //We have defined the code of connectivity between backend and mongoDB in index.js file in DB folder and import that file here and called
 connectDB()
