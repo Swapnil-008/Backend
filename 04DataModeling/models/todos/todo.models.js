@@ -11,7 +11,7 @@ const todoSchema = new mongoose.Schema(
       default: false,
     },
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId, //After this line compulsory next line should be reference , It defines that we are taking reference of 'User'
+      type: mongoose.Schema.Types.ObjectId, //After this line compulsory next line should be reference, It defines that we are taking reference of 'User'
       ref: 'User',
     },
     subTodos: [
@@ -19,9 +19,11 @@ const todoSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'subTodo',
       },
-    ], //Array of Sob-Todos
+    ], //Array of Sub-Todos
   },
   {
     timestamps: true,
   }
 );
+
+export const Todo = mongoose.model('Todo', todoSchema)

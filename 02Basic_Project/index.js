@@ -43,13 +43,14 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/github', (req, res) => {
-    res.json(githubData)
+app.get('/swapnil', (req, res) => {
+  res.json(githubData)
 })
 
 app.get('/login', (req, res) => {
     res.send('<h1>Please login at Swapnil Shingne</h1>')
 })
-app.listen(process.env.PORT, () => {
-  console.log(`Example app listening on port ${port}`)
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })

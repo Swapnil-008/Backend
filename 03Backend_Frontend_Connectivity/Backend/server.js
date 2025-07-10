@@ -5,8 +5,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-
-// get a list of 5 jokes ?
 app.get('/api/jokes', (req, res) => {
     const jokes = [
         {
@@ -36,6 +34,6 @@ app.get('/api/jokes', (req, res) => {
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
+    console.log(`Server is running on http://localhost:${port}`)
 }
 )

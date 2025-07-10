@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     //Timestamp always adds in secondary object
-    timestamps: true, //Which adds  two fields createdAt(), and updatedAt()
+    timestamps: true, //Which adds two fields createdAt(), and updatedAt()
   }
 );
 

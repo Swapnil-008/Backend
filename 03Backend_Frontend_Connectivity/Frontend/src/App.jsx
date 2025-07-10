@@ -12,7 +12,7 @@ function App()
       })
       .catch((error) => {
         console.log(error)
-      })
+      }) 
   }
   )
   return (
@@ -20,7 +20,7 @@ function App()
       <h1>Jokes: {jokes.length}</h1>
       {
         jokes.map((joke, index) => (
-          <div  key={joke.id}>
+          <div key={joke.id}>
             <h3> Joke {index}:  {joke.joke}</h3>
             <p>Content:  {joke.content}</p>
           </div>
