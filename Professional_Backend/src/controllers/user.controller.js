@@ -4,6 +4,7 @@ import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import { mongo } from "mongoose";
 
 const registerUser = asyncHandler(async (req, res) => {
   //1. Get user details from frontend
@@ -291,13 +292,11 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.file?.path
-  if(!avatarLocalPath)
-  {
+  if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is missing!")
   }
   const avatar = await uploadOnCloudinary(avatarLocalPath)  //it returns the object of the avatar from the cloudinary and we just want to extract the url from it
-  if(!avatar.url)
-  {
+  if (!avatar.url) {
     throw new ApiError(400, "Error while uploading an Avatar!")
   }
   const user = await User.findByIdAndUpdate(req.user?._id,
@@ -311,19 +310,17 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     }
   ).select("-password")
   return res
-  .status(200)
-  .json(new ApiResponse(200, user, "Avatar Updated Successfully!"))
+    .status(200)
+    .json(new ApiResponse(200, user, "Avatar Updated Successfully!"))
 })
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
   const coverImageLocalPath = req.file?.path
-  if(!coverImageLocalPath)
-  {
+  if (!coverImageLocalPath) {
     throw new ApiError(400, "Cover Image file is missing!")
   }
   const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-  if(!coverImage.url)
-  {
+  if (!coverImage.url) {
     throw new ApiError(400, "Error while uploading a Cover Image!")
   }
   const user = await User.findByIdAndUpdate(req.user?._id,
@@ -338,20 +335,151 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
   ).select("-password")
 
   return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Cover Image Updated Successfully!"))
+})
+
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params
+  if (!username?.trim()) {
+    throw new ApiError(401, "Username is missing!")
+  }
+  const channel = await User.aggregate(
+    [
+      {
+        $match: {
+          username: username?.toLowerCase()
+        }
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "channel",
+          as: "subscribers"
+        }
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "subscribers",
+          as: "subscribedTo"
+        }
+      },
+      {
+        $addFields: {
+          subscribersCount: { 
+            $size: "$subscribers" 
+          },
+          channelSubscribedToCount: {
+            $size: "$subscribedTo"
+          },
+          isSubscribed: {
+            $cond: {
+              if: { $in: [req.user?._id, "$subscribers.subscriber"] },    //it means, there is a field subscriber in 'subscribers' schema, so check whether it is matching with user._id or not if it is matched it means user is subscribed to this channel otherwise it is not subscribed to this channel
+              then: true,
+              else: false
+            }
+          }
+        }
+      },
+      {
+        $project: {  //Fields which we want to send
+          fullName: 1,
+          username: 1,
+          avatar: 1,
+          coverImage: 1,
+          email: 1,
+          subscribersCount: 1,
+          channelSubscribedToCount: 1,
+          isSubscribed: 1
+        }
+      }
+    ]
+  )
+
+  if(!channel?.length)
+  {
+    throw new ApiError(404, "chennel does not exists!")
+  }
+
+  return res
   .status(200)
-  .json(new ApiResponse(200, user, "Cover Image Updated Successfully!"))
+  .json(
+    new ApiResponse(200, channel[0], "User channel fetched successfully!")
+  )
+})
+
+const getWatchHistory = asyncHandler(async (req, res) => {
+  // req.user._id  -->  it provides the string of the user's id not complete id (complete id = object (in which the string is present))
+  //but mongoose directly converts it into the complete object
+  const user = await User.aggregate(
+    [
+      {
+        $match: {
+          // _id: req.user._id -->  but here we can't use like this, because in aggregation pipeline mongoose doesn't work so here we have to create the ID manually
+          _id: new mongoose.Types.ObjectId(req.user._id)
+        }
+      },
+      {
+        $lookup: {
+          from: "videos",
+          localField: "watchHistory",
+          foreignField: "_id",
+          as: "watchHistory",
+          pipeline: [   //sub pipeline
+            {
+              $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                  {
+                    $project: {
+                      fullName: 1,
+                      username: 1,
+                      avatar: 1
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              $addFields: {
+                owner: { 
+                  $arrayElemAt: ["$owner", 0] 
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  )
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      user[0].watchHistory,
+      "User watch history fetched successfully!"
+    )
+  )
 })
 
 export {
   registerUser,
-  loginUser, 
-  logoutUser, 
-  refreshAccessToken, 
-  changeCurrentPassword, 
-  getCurrentUser, 
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changeCurrentPassword,
+  getCurrentUser,
   updateAccountDetails,
   updateUserAvatar,
-  updateUserCoverImage
- };
-
+  updateUserCoverImage,
+  getUserChannelProfile,
+  getWatchHistory
+};
 //https://chatgpt.com/share/686f9a24-3440-8000-9883-7efd9206cdfa This is the chatgpt link for why login and logout doesn't support the data sent in form-data foramt and supports when then the data comes in JSON format
