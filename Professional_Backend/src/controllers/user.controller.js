@@ -4,8 +4,7 @@ import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
-import { mongo } from "mongoose";
-
+import mongoose from "mongoose";
 const registerUser = asyncHandler(async (req, res) => {
   //1. Get user details from frontend
   //2. Validations
@@ -184,7 +183,11 @@ const logoutUser = asyncHandler(async (req, res) => {
     {   //$set is the mongoDB operator, used to set some new values to the existing parameters
       $set: {
         refreshToken: undefined
-      }
+      },
+      //Alternative
+      // $unset: {
+      //   refreshToken: 1   //set the flag 1 to parameters which we want to unsert
+      // }
     },
     {
       new: true   //returning response should be with new or updated values for that we have set the new = true
@@ -401,6 +404,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 
   if(!channel?.length)
   {
+    console.log("Failed to fetch channel!")
     throw new ApiError(404, "chennel does not exists!")
   }
 
