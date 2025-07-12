@@ -24,9 +24,4 @@ const likeSchema = new Schema(
     }
 )
 
-//Compound indexes to prevent duplicate likes
-likeSchema.index({ video: 1, likedBy: 1 }, { unique: true, sparse: true });
-likeSchema.index({ comment: 1, likedBy: 1 }, { unique: true, sparse: true });
-likeSchema.index({ tweet: 1, likedBy: 1 }, { unique: true, sparse: true })
-
 export const Like = mongoose.model("Like", likeSchema)

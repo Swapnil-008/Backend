@@ -1,6 +1,6 @@
 import mongoose, {isValidObjectId} from "mongoose"
-import {Video} from "../models/video.model.js"
-import {User} from "../models/user.model.js"
+import {Video} from "../models/video.models.js"
+import {User} from "../models/user.models.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
@@ -111,8 +111,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
     const video = await Video.create({
         title,
         description,
-        videoFile: videoFileUrl,
-        thumbnail: thumbnailUrl,
+        videoFile: videoFileUrl.url,
+        thumbnail: thumbnailUrl.url,
         owner: req.user._id
         });
     return res
@@ -125,6 +125,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     //TODO: get video by id
     if (!isValidObjectId(videoId))
     {
+        console.log("Invalid Video ID:", videoId);
         throw new ApiError(400, "Invalid Video ID");
     }
     const video = await Video.findById(videoId)
@@ -132,6 +133,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     {
         throw new ApiError(404, "Video not found");
     }
+    console.log("Video found:", video);
     return res
         .status(200)
         .json(new ApiResponse(200, video, "Video fetched successfully"));
@@ -162,7 +164,7 @@ const updateVideo = asyncHandler(async (req, res) => {
         {
             throw new ApiError(500, "Failed to upload thumbnail");
         }
-        video.thumbnail = thumbnailUrl;
+        video.thumbnail = thumbnailUrl?.url;
     }
     await video.save();
     return res
@@ -182,7 +184,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
     {
         throw new ApiError(404, "Video not found");
     }
-    await video.remove();
+    await video.deleteOne();
     return res
         .status(200)
         .json(new ApiResponse(200, null, "Video deleted successfully"));

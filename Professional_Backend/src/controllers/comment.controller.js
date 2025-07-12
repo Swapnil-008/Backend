@@ -15,7 +15,8 @@ const getVideoComments = asyncHandler(async (req, res) => {
 
     // Check if the video exists
     const video = await Video.findById(videoId);
-    if (!video) {
+    if (!video)
+    {
         throw new ApiError(404, "Video not found");
     }
 

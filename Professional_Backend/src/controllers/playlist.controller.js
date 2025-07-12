@@ -1,9 +1,9 @@
 import mongoose, {isValidObjectId} from "mongoose"
-import {Playlist} from "../models/playlist.model.js"
+import {Playlist} from "../models/playlist.models.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
-import {Video} from "../models/video.model.js"
+import {Video} from "../models/video.models.js"
 
 const createPlaylist = asyncHandler(async (req, res) => {
     const {name, description} = req.body
@@ -142,7 +142,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Playlist not found");
     }
     // Delete the playlist
-    await playlist.remove();
+    await playlist.deleteOne();
     return res
         .status(200)
         .json(new ApiResponse(200, null, "Playlist deleted successfully"));
