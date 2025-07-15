@@ -1,4 +1,4 @@
-import { mongoose, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 //we can store the small files in mongoDB directly also for avoiding to store on another platform and store the string got from that platform, but it is not good practice it increases the load on the database.
