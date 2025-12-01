@@ -18,13 +18,23 @@ function App()
   return (
     <>
       <h1>Jokes: {jokes.length}</h1>
-      {
+      {/*
         jokes.map((joke, index) => (
           <div key={joke.id}>
             <h3> Joke {index}:  {joke.joke}</h3>
             <p>Content:  {joke.content}</p>
           </div>
         ))
+      } */}
+      {
+        jokes.map((joke, index) => {
+          return (
+            <div key={joke.id}>
+              <h3> Joke {index}:  {joke.joke}</h3>
+              <p>Content:  {joke.content}</p>
+            </div>
+          )
+        })
       }
       {/* If we used curly braces instead of parenthesis in map then we have to return the joke also */}
     </>

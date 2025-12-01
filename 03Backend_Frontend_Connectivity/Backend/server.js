@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config({path: '../.env'})  // As the .env file is not in same folder of server.js hence we have to pass the exact file path of the .env
+
 import express from 'express'
 const app = express()
 
@@ -32,7 +35,7 @@ app.get('/api/jokes', (req, res) => {
 }
 )
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
 }
