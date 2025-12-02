@@ -7,7 +7,7 @@ const connectDB = async () => {
     }
     catch(err)
     {
-        console.error(err.message);
+        console.error("Something went wrong, while connecting the database.");
         process.exit(1);   //this process gives the reference of the current working process.
     }
 }
