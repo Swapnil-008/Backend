@@ -1,4 +1,3 @@
-// require('dotenv').config({path: './env})
 // import {DB_NAME} from './constants.js'
 // import express from 'express'
 // const app = express()
@@ -24,6 +23,7 @@ connectDB()
   });
 
 /*
+//IIFE (Immediately Invoked Function Expression) -> which calls automatically just after the function defination using parenthesis, there is no need to call it explicitly.
 //Here we are just creating a function and calling it.
 ( async () => {
     try {
@@ -46,3 +46,26 @@ connectDB()
     }
 })()
 */
+
+//Simpified version of above code.
+// const connectMongoDB = async () => {
+//   try {
+//     await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
+//     console.log('Connected to MongoDB')
+//     // if even the database is connected but still the express is not able to listen for that the below error is mentioned.
+//     app.on("error", () => {
+//       console.log('Error connecting to MongoDB')
+//       throw error
+//     })
+
+//     app.listen(process.env.PORT, () => {
+//       console.log(`Server is running on port ${process.env.PORT}`)
+//     })
+//   }
+//   catch (error) {
+//     console.error('Error connecting to MongoDB:', error)
+//     throw error
+//   }
+// }
+
+// connectMongoDB();
