@@ -3,7 +3,7 @@
 const asyncHandler = (requestHandler) => {
   return (req, res, next) => {
     Promise
-      .resolve(requestHandler(req, res, next))  //As the response is valid, so excuting the function
+      .resolve(requestHandler(req, res, next))  //if the response is valid, it will execute the requestHandler function.
       .catch((err) => next(err));     
   };
 };
