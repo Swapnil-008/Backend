@@ -5,6 +5,8 @@ const hospitalSchema = new mongoose.Schema(
     name : {
       type: String, 
       required: true,
+      unique: true,
+      trim: true,
     },
     addressLine1: {
       type: String,
@@ -32,4 +34,6 @@ const hospitalSchema = new mongoose.Schema(
   }
 )
 
-export const Hospital = mongoose.model('Hospital', hospitalSchema)
+const Hospital = mongoose.model('Hospital', hospitalSchema);
+
+export default Hospital;

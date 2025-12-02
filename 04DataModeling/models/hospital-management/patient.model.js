@@ -6,7 +6,7 @@ const patientSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    diagonesdWith: {
+    diagonsedWith: {
       type: String,
       required: true
     },
@@ -20,7 +20,7 @@ const patientSchema = new mongoose.Schema(
     },
     bloodGroup: {
       type: String,
-      enum: ['M', 'F', 'O'],
+      enum: ['A', 'B', 'O'],
       required: true
     },
     admittedIn: {
@@ -33,4 +33,6 @@ const patientSchema = new mongoose.Schema(
   }
 )
 
-export const Patient = mongoose.model('Patient', patientSchema)
+const Patient = mongoose.model('Patient', patientSchema);
+
+export default Patient;

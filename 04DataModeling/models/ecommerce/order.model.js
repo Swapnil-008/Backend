@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 //Mini Model
-//As this mini model will use only in this file that's why we have defined here only, otherwise we can create the separate model also and export it
+//As this model will use in this file only that's why we have defined here, otherwise we can create the separate model also and export it
 const orderItemSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema(
       ref: 'User',
     },
     orderItems: {
-      type: [orderItemSchema]
+      type: [orderItemSchema]   // Array of objects, object -> Product
     },
     address: {
       type: String,

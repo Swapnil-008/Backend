@@ -19,16 +19,17 @@ const productSchema = new mongoose.Schema(
     },
     stock: {
       type: Number,
-      default: 0
+      default: 0,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
-      required: true
+      required: true,
     },
-    owner: {
+    createdBy: {                               // we can use owner also
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: true,
     }
   },
   {
@@ -36,4 +37,6 @@ const productSchema = new mongoose.Schema(
   }
 )
 
-export const Product = mongoose.model('Product', productSchema)
+const Product = mongoose.model('Product', productSchema);
+
+export default Product;
