@@ -10,7 +10,7 @@ const subTodoSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    createBy: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }
@@ -20,4 +20,6 @@ const subTodoSchema = new mongoose.Schema(
   }
 )
 
-export const subTodo = mongoose.model('subTodo', subTodoSchema)
+const subTodo = mongoose.model('subTodo', subTodoSchema)
+
+export default subTodo;
